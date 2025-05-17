@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Limit_Tracker__c</fullName>
+    <description>The parent limit tracker.</description>
+    <label>Limit Tracker</label>
+    <referenceTo>Limit_Tracker__c</referenceTo>
+    <relationshipLabel>Limit Tracker Snapshots</relationshipLabel>
+    <relationshipName>Limit_Tracker_Snapshots</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>
