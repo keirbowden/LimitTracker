@@ -24,6 +24,12 @@ public with sharing class LimitSnapshotService
         trackersByName.put(name, snapshot);
     }
 
+    public void startTracking(String name, String additionalInfo)
+    {
+        LimitSnapshot snapshot=new LimitSnapshot(name, additionalInfo);
+        trackersByName.put(name, snapshot);
+    }
+
     public LimitSnapshot stopTracking(String name)
     {
         LimitSnapshot start=trackersByName.remove(name);

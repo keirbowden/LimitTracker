@@ -7,6 +7,7 @@ public with sharing class LimitSnapshot
     public Integer dmlStatements;
     public Integer soqlQueries;
     public Integer soqlRecords;
+    public String additionalInfo;
 
     public LimitSnapshot(String name)
     {
@@ -17,6 +18,12 @@ public with sharing class LimitSnapshot
         this.dmlStatements=Limits.getDmlStatements();
         this.soqlQueries=Limits.getQueries();
         this.soqlRecords=Limits.getQueryRows();
+    }
+
+    public LimitSnapshot(String name, String additionalInfo)
+    {
+        this(name);
+        this.additionalInfo=additionalInfo;
     }
 
     public void offsetFromStart(LimitSnapshot start)
@@ -31,6 +38,7 @@ public with sharing class LimitSnapshot
             this.dmlStatements-=start.dmlStatements;
             this.soqlQueries-=start.soqlQueries;
             this.soqlRecords-=start.soqlRecords;
+            this.additionalInfo=start.additionalInfo;
         }
     }
 
@@ -43,6 +51,7 @@ public with sharing class LimitSnapshot
         this.dmlStatements=snapshot.DML_Statements__c.intValue();
         this.soqlQueries=snapshot.SOQL_Queries__c.intValue();
         this.soqlRecords=snapshot.SOQL_Records__c.intValue();
+        this.additionalInfo=snapshot.Additional_Information__c;
     }
 
     public LimitSnapshot(Limit_Snapshot__e snapshot)
@@ -54,6 +63,7 @@ public with sharing class LimitSnapshot
         this.dmlStatements=snapshot.DML_Statements__c.intValue();
         this.soqlQueries=snapshot.SOQL_Queries__c.intValue();
         this.soqlRecords=snapshot.SOQL_Records__c.intValue();
+        this.additionalInfo=snapshot.Additional_Information__c;
     }
 
     public Limit_Snapshot__e toSnapshotEvent()
@@ -64,7 +74,8 @@ public with sharing class LimitSnapshot
                                                      DML_Records__c=this.dmlRecords,
                                                      DML_Statements__c=this.dmlStatements,
                                                      SOQL_Queries__c=this.soqlQueries,
-                                                     SOQL_Records__c=this.soqlRecords);
+                                                     SOQL_Records__c=this.soqlRecords,
+                                                     Additional_Information__c=this.additionalInfo);
         return snEv;
     }        
 }

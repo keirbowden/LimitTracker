@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DML_Records_Max__c</fullName>
+    <description>The maximum value of the DML records value from the related snapshots.</description>
+    <label>DML Records Max</label>
+    <summarizedField>Limit_Tracker_Snapshot__c.DML_Records__c</summarizedField>
+    <summaryForeignKey>Limit_Tracker_Snapshot__c.Limit_Tracker__c</summaryForeignKey>
+    <summaryOperation>max</summaryOperation>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

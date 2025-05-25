@@ -63,6 +63,7 @@ public with sharing class LimitTrackerService
                 trackerSnapshot.Heap__c=snapshot.Heap__c;
                 trackerSnapshot.SOQL_Queries__c=snapshot.SOQL_Queries__c;
                 trackerSnapshot.SOQL_Records__c=snapshot.SOQL_Records__c;
+                trackerSnapshot.Additional_Information__c=snapshot.Additional_Information__c;
                 trackerSnapshot.Limit_tracker__c=tracker.Id;    
                 trackerSnapshotsToAdd.add(trackerSnapshot);
 
