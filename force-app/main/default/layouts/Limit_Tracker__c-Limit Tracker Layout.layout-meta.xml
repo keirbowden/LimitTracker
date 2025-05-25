@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <excludeButtons>OpenSlackRecordChannel</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
     <layoutSections>
         <customLabel>false</customLabel>
@@ -27,16 +28,12 @@
         <label>CPU</label>
         <layoutColumns>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>CPU_Min__c</field>
+                <behavior>Edit</behavior>
+                <field>CPU_Last__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>CPU_Max__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>CPU_Last__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -61,6 +58,10 @@
                 <behavior>Edit</behavior>
                 <field>Heap_Last__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Heap_Max__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -78,15 +79,15 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>DML</label>
+        <label>DML Statements</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>DML_Statements_Last__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>DML_Records_Last__c</field>
+                <behavior>Readonly</behavior>
+                <field>DML_Statements_Max__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -98,6 +99,25 @@
                 <behavior>Edit</behavior>
                 <field>DML_Statements_Alert_Change__c</field>
             </layoutItems>
+        </layoutColumns>
+        <style>TwoColumnsLeftToRight</style>
+    </layoutSections>
+    <layoutSections>
+        <customLabel>true</customLabel>
+        <detailHeading>true</detailHeading>
+        <editHeading>true</editHeading>
+        <label>DML Records</label>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>DML_Records_Last__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>DML_Records_Max__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>DML_Records_Alert_Threshold_1__c</field>
@@ -113,15 +133,15 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>SOQL</label>
+        <label>SOQL Queries</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>SOQL_Queries_Last__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>SOQL_Records_Last__c</field>
+                <behavior>Readonly</behavior>
+                <field>SOQL_Queries_Max__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -133,6 +153,25 @@
                 <behavior>Edit</behavior>
                 <field>SOQL_Queries_Alert_Change__c</field>
             </layoutItems>
+        </layoutColumns>
+        <style>TwoColumnsLeftToRight</style>
+    </layoutSections>
+    <layoutSections>
+        <customLabel>true</customLabel>
+        <detailHeading>true</detailHeading>
+        <editHeading>true</editHeading>
+        <label>SOQL Records</label>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>SOQL_Records_Last__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>SOQL_Records_Max__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>SOQL_Records_Alert_Threshold_1__c</field>
@@ -202,7 +241,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00hPw000005tANF</masterLabel>
+        <masterLabel>00hQI000007z8yQ</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>
