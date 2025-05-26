@@ -37,6 +37,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Limit_Tracker_Snapshot__c.User__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Limit_Tracker__c.CPU_Alert_Change__c</field>
         <readable>true</readable>
     </fieldPermissions>

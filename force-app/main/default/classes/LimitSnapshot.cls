@@ -8,6 +8,7 @@ public with sharing class LimitSnapshot
     public Integer soqlQueries;
     public Integer soqlRecords;
     public String additionalInfo;
+    public Id userId;
 
     public LimitSnapshot(String name)
     {
@@ -18,6 +19,7 @@ public with sharing class LimitSnapshot
         this.dmlStatements=Limits.getDmlStatements();
         this.soqlQueries=Limits.getQueries();
         this.soqlRecords=Limits.getQueryRows();
+        this.userId=UserInfo.getUserId();
     }
 
     public LimitSnapshot(String name, String additionalInfo)
@@ -39,6 +41,7 @@ public with sharing class LimitSnapshot
             this.soqlQueries-=start.soqlQueries;
             this.soqlRecords-=start.soqlRecords;
             this.additionalInfo=start.additionalInfo;
+            this.userId=start.userId;
         }
     }
 
@@ -52,6 +55,7 @@ public with sharing class LimitSnapshot
         this.soqlQueries=snapshot.SOQL_Queries__c.intValue();
         this.soqlRecords=snapshot.SOQL_Records__c.intValue();
         this.additionalInfo=snapshot.Additional_Information__c;
+        this.userId=snapshot.User__c;
     }
 
     public LimitSnapshot(Limit_Snapshot__e snapshot)
@@ -64,6 +68,7 @@ public with sharing class LimitSnapshot
         this.soqlQueries=snapshot.SOQL_Queries__c.intValue();
         this.soqlRecords=snapshot.SOQL_Records__c.intValue();
         this.additionalInfo=snapshot.Additional_Information__c;
+        this.userId=snapshot.User_Id__c;
     }
 
     public Limit_Snapshot__e toSnapshotEvent()
@@ -75,7 +80,8 @@ public with sharing class LimitSnapshot
                                                      DML_Statements__c=this.dmlStatements,
                                                      SOQL_Queries__c=this.soqlQueries,
                                                      SOQL_Records__c=this.soqlRecords,
-                                                     Additional_Information__c=this.additionalInfo);
+                                                     Additional_Information__c=this.additionalInfo,
+                                                     User_Id__c=this.userId);
         return snEv;
     }        
 }

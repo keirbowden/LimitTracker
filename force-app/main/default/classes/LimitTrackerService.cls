@@ -42,6 +42,17 @@ public with sharing class LimitTrackerService
         return snapshot;
     }
     
+    public void stopTrackingAndPublishSnapshot(String name)
+    {
+        LimitSnapshot start=trackersByName.remove(name);
+
+        LimitSnapshot snapshot=new LimitSnapshot(name);
+
+        snapshot.offsetFromStart(start);
+
+        this.publishSnapshot(snapshot);
+    }
+    
     public void publishSnapshot(LimitSnapshot snapshot)
     {
         publishSnapshots(new List<LimitSnapshot>{snapshot});
@@ -125,6 +136,7 @@ public with sharing class LimitTrackerService
                 trackerSnapshot.SOQL_Records__c=snapshot.SOQL_Records__c;
                 trackerSnapshot.Additional_Information__c=snapshot.Additional_Information__c;
                 trackerSnapshot.Limit_tracker__c=tracker.Id;    
+                trackerSnapshot.User__c=snapshot.User_Id__c;
                 trackerSnapshotsToAdd.add(trackerSnapshot);
 
                 if ( (null==lastDT) || (snapshot.CreatedDate > lastDT) )
