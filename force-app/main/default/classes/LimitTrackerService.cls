@@ -179,15 +179,17 @@ public with sharing class LimitTrackerService
                 snapshotsForName.add(snapshot);
             }
 
-            List<Limit_Tracker__c> limitTrackers=
+            Map<Id, Limit_Tracker__c> limitTrackersById=new Map<Id, Limit_Tracker__c>(
                         [select Id, Name
                          from Limit_Tracker__c 
-                         where Name in :snapshotsByName.keySet()];
+                         where Name in :snapshotsByName.keySet()]);
 
             List<Limit_Tracker_Snapshot__c> trackerSnapshotsToAdd=
                         new List<Limit_Tracker_Snapshot__c>();
 
-            for (Limit_Tracker__c tracker : limitTrackers)
+            Map<Id, Limit_Tracker_Snapshot__c> lastSnapshotForTracker=new Map<Id, Limit_Tracker_Snapshot__c>();
+
+            for (Limit_Tracker__c tracker : limitTrackersById.values())
             {
                 DateTime lastDT=null;
 
@@ -218,12 +220,18 @@ public with sharing class LimitTrackerService
                         tracker.DML_Records_Last__c=snapshot.DML_Records__c;    
                         tracker.DML_Statements_Last__c=snapshot.DML_Statements__c;  
                         tracker.SOQL_Queries_Last__c=snapshot.SOQL_Queries__c;  
+                        lastSnapshotForTracker.put(tracker.Id, trackerSnapshot);
                     }
                 }
             }
 
             insert trackerSnapshotsToAdd;
-            update limitTrackers;
+            for (Id trackerId : lastSnapshotForTracker.keySet())
+            {
+                System.debug('Setting limit tracker ' + limitTrackersById.get(trackerId).Name + ' last to ' + lastSnapshotForTracker.get(trackerId).Id);
+                limitTrackersById.get(trackerId).Last_Snapshot__c=lastSnapshotForTracker.get(trackerId).Id;
+            }
+            update limitTrackersById.values();
         }
     }
 
@@ -232,6 +240,15 @@ public with sharing class LimitTrackerService
     {
         if (trackingEnabled)
         {
+            List<Id> snapshotIds=new List<Id>();
+            for (Limit_Tracker__c tracker : newTrackers)
+            {
+                snapshotIds.add(tracker.Last_Snapshot__c);   
+            }
+            Map<Id, Limit_Tracker_Snapshot__c> snapshotsById=
+                           new Map<Id, Limit_Tracker_Snapshot__c>([select Id, Additional_Information__c 
+                                               from Limit_Tracker_Snapshot__c where Id in :snapshotIds]);
+                                               
             List<LimitTrackerAlert> alerts=new List<LimitTrackerAlert>();
 
             System.debug('Processing tracker updates');
@@ -240,12 +257,14 @@ public with sharing class LimitTrackerService
                 Limit_Tracker__c oldTracker=oldTrackers[idx];
                 Limit_Tracker__c newTracker=newTrackers[idx];
 
-                alerts.addAll(raiseAlerts('Heap', oldTracker.Heap_Last__c.intValue(), 
+                alerts.addAll(raiseAlerts(newTracker, snapshotsById.get(newTracker.Last_Snapshot__c), 
+                                'Heap', oldTracker.Heap_Last__c.intValue(), 
                             newTracker.Heap_Last__c.intValue(),
                             newTracker.Heap_Alert_Threshold_1__c?.intValue(),
                             newTracker.Heap_Alert_Change__c?.intValue()));
                 
-                alerts.addAll(raiseAlerts('CPU', oldTracker.CPU_Last__c.intValue(), 
+                alerts.addAll(raiseAlerts(newTracker, snapshotsById.get(newTracker.Last_Snapshot__c), 
+                            'CPU', oldTracker.CPU_Last__c.intValue(), 
                             newTracker.CPU_Last__c.intValue(),
                             newTracker.CPU_Alert_Threshold_1__c?.intValue(),
                             newTracker.CPU_Alert_Change__c?.intValue()));
@@ -258,8 +277,10 @@ public with sharing class LimitTrackerService
         }
     }
 
-    private List<LimitTrackerAlert> raiseAlerts(String which, Integer oldVal, Integer newVal,
-                                              Integer alertThreshold, Integer changePercent)
+    private List<LimitTrackerAlert> raiseAlerts(Limit_Tracker__c tracker, Limit_Tracker_Snapshot__c last, 
+                                                String which, 
+                                                Integer oldVal, Integer newVal,
+                                                Integer alertThreshold, Integer changePercent)
     {
         List<LimitTrackerAlert> alerts=new List<LimitTrackerAlert>();
 
@@ -271,9 +292,11 @@ public with sharing class LimitTrackerService
             System.debug(which + ' increased');
             if ( (null!=alertThreshold) && (newVal>alertThreshold) )
             {
-                alerts.add(new LimitTrackerAlert(which + ' limit consumption alert',
+                alerts.add(new LimitTrackerAlert(tracker.Name + ' ' + which + ' limit consumption alert',
                               'The ' + which + ' limit consumption alert threshold of ' + alertThreshold + 
-                              ' has been exceeded with a value of ' + newVal)); 
+                              ' has been exceeded with a value of ' + newVal + 
+                              '<p>Additional information:</p>' + 
+                              '<p>' + last.Additional_Information__c + '</p>')); 
                 System.debug(which + ' alert threshold 1 exceeded');
             }
                 
@@ -285,9 +308,11 @@ public with sharing class LimitTrackerService
                 System.debug('Percent = ' + percent + ' and threshold = ' + changePercent);
                 if (percent>=changePercent)
                 {
-                    alerts.add(new LimitTrackerAlert(which + ' limit consumption alert',
+                    alerts.add(new LimitTrackerAlert(tracker.Name + ' ' + which + ' limit consumption alert',
                               'The ' + which + ' limit consumption percentage change of ' + newVal + 
-                                        ' exceeded the configured value of ' + changePercent)); 
+                                ' exceeded the configured value of ' + changePercent + 
+                                '<p>Additional information:</p>' + 
+                                '<p>' + last.Additional_Information__c + '</p>')); 
 
                     System.debug(which + ' percentage change exceeded');
                 }                    
