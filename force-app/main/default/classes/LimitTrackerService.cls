@@ -265,6 +265,26 @@ public with sharing class LimitTrackerService
                                 'CPU', oldTracker.CPU_Last__c.intValue(), 
                                 newTracker.CPU_Last__c.intValue(),
                                 newTracker.CPU_Alert_Change__c?.intValue()));
+                
+                    alerts.addAll(raiseAlerts(newTracker, snapshotsById.get(newTracker.Last_Snapshot__c), 
+                                'DML Records', oldTracker.DML_Records_Last__c.intValue(), 
+                                newTracker.DML_Records_Last__c.intValue(),
+                                newTracker.DML_Records_Alert_Change__c?.intValue()));
+                
+                    alerts.addAll(raiseAlerts(newTracker, snapshotsById.get(newTracker.Last_Snapshot__c), 
+                                'DML Statements', oldTracker.DML_Statements_Last__c.intValue(), 
+                                newTracker.DML_Statements_Last__c.intValue(),
+                                newTracker.DML_Statements_Alert_Change__c?.intValue()));
+                
+                    alerts.addAll(raiseAlerts(newTracker, snapshotsById.get(newTracker.Last_Snapshot__c), 
+                                'SOQL Queries', oldTracker.SOQL_Queries_Last__c.intValue(), 
+                                newTracker.SOQL_Queries_Last__c.intValue(),
+                                newTracker.SOQL_Queries_Alert_Change__c?.intValue()));
+                
+                    alerts.addAll(raiseAlerts(newTracker, snapshotsById.get(newTracker.Last_Snapshot__c), 
+                                'SOQL Records', oldTracker.SOQL_Records_Last__c.intValue(), 
+                                newTracker.SOQL_Records_Last__c.intValue(),
+                                newTracker.SOQL_Records_Alert_Change__c?.intValue()));
                 }
 
                 if (!alerts.isEmpty())
@@ -283,6 +303,21 @@ public with sharing class LimitTrackerService
             alerts.addAll(raiseThresholdAlerts(snapshot.Limit_Tracker_Name__c, 'CPU', 
                                         snapshot.Additional_Information__c, snapshot.CPU__c.intValue(),
                                                 snapshot.CPU_Alert_Threshold_1__c.intValue()));
+            alerts.addAll(raiseThresholdAlerts(snapshot.Limit_Tracker_Name__c, 'Heap', 
+                                        snapshot.Additional_Information__c, snapshot.Heap__c.intValue(),
+                                                snapshot.Heap_Alert_Threshold_1__c.intValue()));
+            alerts.addAll(raiseThresholdAlerts(snapshot.Limit_Tracker_Name__c, 'DML Records', 
+                                        snapshot.Additional_Information__c, snapshot.DML_Records__c.intValue(),
+                                                snapshot.DML_Records_Alert_Threshold_1__c.intValue()));
+            alerts.addAll(raiseThresholdAlerts(snapshot.Limit_Tracker_Name__c, 'DML Statements', 
+                                        snapshot.Additional_Information__c, snapshot.DML_Statements__c.intValue(),
+                                                snapshot.DML_Statements_Alert_Threshold_1__c.intValue()));
+            alerts.addAll(raiseThresholdAlerts(snapshot.Limit_Tracker_Name__c, 'SOQL Queries', 
+                                        snapshot.Additional_Information__c, snapshot.SOQL_Queries__c.intValue(),
+                                                snapshot.SOQL_Queries_Alert_Threshold_1__c.intValue()));
+            alerts.addAll(raiseThresholdAlerts(snapshot.Limit_Tracker_Name__c, 'SOQL Records', 
+                                        snapshot.Additional_Information__c, snapshot.SOQL_Records__c.intValue(),
+                                                snapshot.SOQL_Records_Alert_Threshold_1__c.intValue()));
         }
 
         if (!alerts.isEmpty())
