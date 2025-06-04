@@ -3,6 +3,10 @@
     <label>ChatterGroupNotifier</label>
     <protected>false</protected>
     <values>
+        <field>Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
         <field>Additional_Config__c</field>
         <value xsi:type="xsd:string">groupName=Limit Monitors</value>
     </values>

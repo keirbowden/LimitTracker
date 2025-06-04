@@ -207,7 +207,8 @@ public with sharing class LimitTrackerService
                     trackerSnapshot.Heap__c=snapshot.Heap__c;
                     trackerSnapshot.SOQL_Queries__c=snapshot.SOQL_Queries__c;
                     trackerSnapshot.SOQL_Records__c=snapshot.SOQL_Records__c;
-                    trackerSnapshot.Additional_Information__c=snapshot.Additional_Information__c;
+                    trackerSnapshot.Additional_Information__c=snapshot.Additional_Information__c + 
+                                        '<p>User: ' + snapshot.User_Id__c + '</p>';
                     trackerSnapshot.Limit_tracker__c=tracker.Id;    
                     trackerSnapshot.User__c=snapshot.User_Id__c;
                     trackerSnapshotsToAdd.add(trackerSnapshot);
@@ -215,11 +216,6 @@ public with sharing class LimitTrackerService
                     if ( (null==lastDT) || (snapshot.CreatedDate > lastDT) )
                     {
                         lastDT=snapshot.CreatedDate;
-                        tracker.CPU_Last__c=snapshot.CPU__c;
-                        tracker.Heap_Last__c=snapshot.Heap__c;  
-                        tracker.DML_Records_Last__c=snapshot.DML_Records__c;    
-                        tracker.DML_Statements_Last__c=snapshot.DML_Statements__c;  
-                        tracker.SOQL_Queries_Last__c=snapshot.SOQL_Queries__c;  
                         lastSnapshotForTracker.put(tracker.Id, trackerSnapshot);
                     }
                 }
@@ -257,52 +253,82 @@ public with sharing class LimitTrackerService
                 Limit_Tracker__c oldTracker=oldTrackers[idx];
                 Limit_Tracker__c newTracker=newTrackers[idx];
 
-                alerts.addAll(raiseAlerts(newTracker, snapshotsById.get(newTracker.Last_Snapshot__c), 
-                                'Heap', oldTracker.Heap_Last__c.intValue(), 
-                            newTracker.Heap_Last__c.intValue(),
-                            newTracker.Heap_Alert_Threshold_1__c?.intValue(),
-                            newTracker.Heap_Alert_Change__c?.intValue()));
+                // don't alert change on the first record
+                if (null!=oldTracker.Last_Snapshot__c)
+                {
+                    alerts.addAll(raiseAlerts(newTracker, snapshotsById.get(newTracker.Last_Snapshot__c), 
+                                    'Heap', oldTracker.Heap_Last__c.intValue(), 
+                                newTracker.Heap_Last__c.intValue(),
+                                newTracker.Heap_Alert_Change__c?.intValue()));
                 
-                alerts.addAll(raiseAlerts(newTracker, snapshotsById.get(newTracker.Last_Snapshot__c), 
-                            'CPU', oldTracker.CPU_Last__c.intValue(), 
-                            newTracker.CPU_Last__c.intValue(),
-                            newTracker.CPU_Alert_Threshold_1__c?.intValue(),
-                            newTracker.CPU_Alert_Change__c?.intValue()));
-            }
+                    alerts.addAll(raiseAlerts(newTracker, snapshotsById.get(newTracker.Last_Snapshot__c), 
+                                'CPU', oldTracker.CPU_Last__c.intValue(), 
+                                newTracker.CPU_Last__c.intValue(),
+                                newTracker.CPU_Alert_Change__c?.intValue()));
+                }
 
-            if (!alerts.isEmpty())
-            {
-                sendAlerts(alerts);
+                if (!alerts.isEmpty())
+                {
+                    sendAlerts(alerts);
+                }
             }
         }
+    }
+
+    public void processTrackerSnapshots(List<Limit_Tracker_Snapshot__c> snapshots)
+    {
+        List<LimitTrackerAlert> alerts=new List<LimitTrackerAlert>();
+        for (Limit_Tracker_Snapshot__c snapshot : snapshots)
+        {
+            alerts.addAll(raiseThresholdAlerts(snapshot.Limit_Tracker_Name__c, 'CPU', 
+                                        snapshot.Additional_Information__c, snapshot.CPU__c.intValue(),
+                                                snapshot.CPU_Alert_Threshold_1__c.intValue()));
+        }
+
+        if (!alerts.isEmpty())
+        {
+              sendAlerts(alerts);
+        }
+    }
+
+    private List<LimitTrackerAlert> raiseThresholdAlerts(String trackerName,
+                                                        String which, 
+                                                        String additionalInfo,
+                                                        Integer newVal,
+                                                        Integer alertThreshold)
+    {
+        List<LimitTrackerAlert> alerts=new List<LimitTrackerAlert>();
+
+        System.debug(which + ' val = ' + newVal + ' and threshold = ' + alertThreshold);
+        if ( (null!=alertThreshold) && (newVal>alertThreshold) )
+        {
+            alerts.add(new LimitTrackerAlert(trackerName + ' ' + which + ' limit consumption alert',
+                          'The ' + which + ' limit consumption alert threshold of ' + alertThreshold + 
+                          ' has been exceeded with a value of ' + newVal + 
+                          '<p>Additional information:</p>' + 
+                            '<p>' + additionalInfo + '</p>')); 
+            System.debug(which + ' alert threshold 1 exceeded');
+        }
+
+        return alerts;
     }
 
     private List<LimitTrackerAlert> raiseAlerts(Limit_Tracker__c tracker, Limit_Tracker_Snapshot__c last, 
                                                 String which, 
                                                 Integer oldVal, Integer newVal,
-                                                Integer alertThreshold, Integer changePercent)
+                                                Integer changePercent)
     {
         List<LimitTrackerAlert> alerts=new List<LimitTrackerAlert>();
 
         System.debug('Old ' + which + ' = ' + oldVal);
         System.debug('New ' + which + ' = ' + newVal);
 
-        if (oldVal<newVal)
+        if (null!=changePercent)
         {
-            System.debug(which + ' increased');
-            if ( (null!=alertThreshold) && (newVal>alertThreshold) )
+            if (oldVal<newVal)
             {
-                alerts.add(new LimitTrackerAlert(tracker.Name + ' ' + which + ' limit consumption alert',
-                              'The ' + which + ' limit consumption alert threshold of ' + alertThreshold + 
-                              ' has been exceeded with a value of ' + newVal + 
-                              '<p>Additional information:</p>' + 
-                              '<p>' + last.Additional_Information__c + '</p>')); 
-                System.debug(which + ' alert threshold 1 exceeded');
-            }
-                
-            // don't alert for the first record
-            if ( (null!=changePercent) && (0!=oldVal) )
-            {
+                System.debug(which + ' increased');
+
                 Integer diff=newVal-oldVal;
                 Integer percent=(diff * 100) / oldVal;
                 System.debug('Percent = ' + percent + ' and threshold = ' + changePercent);
@@ -330,14 +356,17 @@ public with sharing class LimitTrackerService
         List<Limit_Alert_Notifier__mdt> notifierMDTs=Limit_Alert_Notifier__mdt.getAll().values();
         for (Limit_Alert_Notifier__mdt notifierMDT : notifierMDTs)
         {
-            System.Type notType=Type.forName(notifierMDT.Namespace__c,
-                                            notifierMDT.Apex_Class__c);
+            if (notifierMDT.Active__c)
+            {
+                System.Type notType=Type.forName(notifierMDT.Namespace__c,
+                                                notifierMDT.Apex_Class__c);
 
-            LimitNotifierInterface notifier=(LimitNotifierInterface) notType.newInstance();
+                LimitNotifierInterface notifier=(LimitNotifierInterface) notType.newInstance();
                                                   
 
-            notifier.configure(notifierMDT.Additional_Config__c);
-            notifiers.add(notifier);
+                notifier.configure(notifierMDT.Additional_Config__c);
+                notifiers.add(notifier);
+            }
         }
 
         for (LimitNotifierInterface notifier : notifiers)

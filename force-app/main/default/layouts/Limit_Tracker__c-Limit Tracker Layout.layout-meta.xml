@@ -12,6 +12,10 @@
                 <behavior>Required</behavior>
                 <field>Name</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Last_Snapshot__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -28,7 +32,7 @@
         <label>CPU</label>
         <layoutColumns>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Readonly</behavior>
                 <field>CPU_Last__c</field>
             </layoutItems>
             <layoutItems>
@@ -55,7 +59,7 @@
         <label>Heap</label>
         <layoutColumns>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Readonly</behavior>
                 <field>Heap_Last__c</field>
             </layoutItems>
             <layoutItems>
@@ -82,7 +86,7 @@
         <label>DML Statements</label>
         <layoutColumns>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Readonly</behavior>
                 <field>DML_Statements_Last__c</field>
             </layoutItems>
             <layoutItems>
@@ -109,7 +113,7 @@
         <label>DML Records</label>
         <layoutColumns>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Readonly</behavior>
                 <field>DML_Records_Last__c</field>
             </layoutItems>
             <layoutItems>
@@ -136,7 +140,7 @@
         <label>SOQL Queries</label>
         <layoutColumns>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Readonly</behavior>
                 <field>SOQL_Queries_Last__c</field>
             </layoutItems>
             <layoutItems>
@@ -163,7 +167,7 @@
         <label>SOQL Records</label>
         <layoutColumns>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Readonly</behavior>
                 <field>SOQL_Records_Last__c</field>
             </layoutItems>
             <layoutItems>
