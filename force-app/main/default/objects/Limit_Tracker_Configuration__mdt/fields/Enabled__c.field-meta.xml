@@ -3,7 +3,7 @@
     <fullName>Enabled__c</fullName>
     <defaultValue>false</defaultValue>
     <description>Indicates if limit consumption should be tracked.</description>
-    <fieldManageability>DeveloperControlled</fieldManageability>
+    <fieldManageability>SubscriberControlled</fieldManageability>
     <label>Enabled</label>
     <type>Checkbox</type>
 </CustomField>

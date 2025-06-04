@@ -6,8 +6,18 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Limit_Tracker_Snapshot__c.CPU_Alert_Threshold_1__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Limit_Tracker_Snapshot__c.CPU__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Limit_Tracker_Snapshot__c.DML_Records_Alert_Threshold_1__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -16,8 +26,18 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Limit_Tracker_Snapshot__c.DML_Statements_Alert_Threshold_1__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Limit_Tracker_Snapshot__c.DML_Statements__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Limit_Tracker_Snapshot__c.Heap_Alert_Threshold_1__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -26,8 +46,23 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Limit_Tracker_Snapshot__c.Limit_Tracker_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Limit_Tracker_Snapshot__c.SOQL_Queries_Alert_Threshold_1__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Limit_Tracker_Snapshot__c.SOQL_Queries__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Limit_Tracker_Snapshot__c.SOQL_Records_Alert_Threshold_1__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -118,6 +153,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Limit_Tracker__c.Heap_Max__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Limit_Tracker__c.Last_Snapshot__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

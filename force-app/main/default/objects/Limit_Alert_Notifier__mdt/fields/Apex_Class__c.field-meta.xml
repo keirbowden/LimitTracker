@@ -3,7 +3,7 @@
     <fullName>Apex_Class__c</fullName>
     <description>The name of the Apex class that implements the AlertNotifierInterface interface.</description>
     <externalId>false</externalId>
-    <fieldManageability>DeveloperControlled</fieldManageability>
+    <fieldManageability>SubscriberControlled</fieldManageability>
     <label>Apex Class</label>
     <length>80</length>
     <required>false</required>

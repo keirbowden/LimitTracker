@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <PlatformEventSubscriberConfig xmlns="http://soap.sforce.com/2006/04/metadata">
+  <masterLabel>Limit_Snapshot__e_PlatformEvent_Config</masterLabel>
+  <platformEventConsumer>LimitSnapshotEvent_ai</platformEventConsumer>
+  <user>test-xvfcty25za53@example.com</user>
+  <batchSize>2000</batchSize>
+  <isProtected>false</isProtected>
+</PlatformEventSubscriberConfig>

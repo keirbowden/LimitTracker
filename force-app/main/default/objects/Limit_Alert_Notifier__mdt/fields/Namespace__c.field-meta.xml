@@ -3,7 +3,7 @@
     <fullName>Namespace__c</fullName>
     <description>The namespace that the Apex class is part of</description>
     <externalId>false</externalId>
-    <fieldManageability>DeveloperControlled</fieldManageability>
+    <fieldManageability>SubscriberControlled</fieldManageability>
     <label>Namespace</label>
     <length>80</length>
     <required>false</required>

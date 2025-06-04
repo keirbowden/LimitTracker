@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>SOQL_Records_Last__c</fullName>
-    <defaultValue>0</defaultValue>
-    <description>The last recorded SOQL records value.</description>
     <externalId>false</externalId>
+    <formula>Last_Snapshot__r.SOQL_Records__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>SOQL Records Last</label>
-    <precision>5</precision>
+    <precision>18</precision>
     <required>false</required>
     <scale>0</scale>
     <trackTrending>false</trackTrending>
