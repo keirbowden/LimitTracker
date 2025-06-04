@@ -4,7 +4,7 @@
     <description>Alert if the heap consumption exceeds this threshold</description>
     <externalId>false</externalId>
     <label>Heap Alert Threshold 1</label>
-    <precision>5</precision>
+    <precision>7</precision>
     <required>false</required>
     <scale>0</scale>
     <trackTrending>false</trackTrending>
