@@ -236,8 +236,16 @@
         <relatedList>RelatedHistoryList</relatedList>
     </relatedLists>
     <relatedLists>
+        <fields>CREATED_DATE</fields>
         <fields>NAME</fields>
+        <fields>User__c</fields>
+        <fields>CPU__c</fields>
+        <fields>Heap__c</fields>
+        <fields>SOQL_Queries__c</fields>
+        <fields>DML_Records__c</fields>
         <relatedList>Limit_Tracker_Snapshot__c.Limit_Tracker__c</relatedList>
+        <sortField>CREATED_DATE</sortField>
+        <sortOrder>Desc</sortOrder>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
@@ -245,7 +253,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00hQI000007z8yQ</masterLabel>
+        <masterLabel>00hQI000008DGTo</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

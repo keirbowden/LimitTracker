@@ -3,6 +3,10 @@
     <label>EmailNotifier</label>
     <protected>false</protected>
     <values>
+        <field>Active__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
         <field>Additional_Config__c</field>
         <value xsi:type="xsd:string">to=keir@littlebramleys.co.uk</value>
     </values>

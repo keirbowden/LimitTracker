@@ -360,7 +360,7 @@ public with sharing class LimitTrackerService
 
         if (null!=changePercent)
         {
-            if (oldVal<newVal)
+            if ( (oldVal!=0) && (oldVal<newVal) )
             {
                 System.debug(which + ' increased');
 
