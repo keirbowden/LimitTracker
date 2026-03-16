@@ -57,3 +57,6 @@ for (Integer idx1=0; idx1<100; idx1++)
 }
 lts.stopTrackingAndPublishSnapshot('Loop1');
 ````
+
+The related records are displayed in the `Additional Information` tab of the `Limit Tracker Snapshot` page as cards.
+
