@@ -68,6 +68,36 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
+                <componentName>additionalInfoRichText</componentName>
+                <identifier>c_additionalInfoRichText</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.JSON_Additional_Info__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>false</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentName>associatedRecords</componentName>
+                <identifier>c_associatedRecords2</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.JSON_Additional_Info__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>true</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <name>Facet-e1cf3022-da18-4e0b-b698-9dc569c1e334</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
                 <componentInstanceProperties>
                     <name>body</name>
                     <value>relatedTabContent</value>
@@ -96,6 +126,20 @@
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
                 <identifier>detailTab</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>body</name>
+                    <value>Facet-e1cf3022-da18-4e0b-b698-9dc569c1e334</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>Additional Information</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:tab</componentName>
+                <identifier>flexipage_tab</identifier>
             </componentInstance>
         </itemInstances>
         <mode>Replace</mode>

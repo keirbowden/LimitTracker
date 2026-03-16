@@ -1,0 +1,18 @@
+<template>
+    <lightning-card>
+        <h1 slot="title">Related Records</h1>
+        <div class="slds-grid">
+            <template for:each={records.data} for:item="record">
+                <div key={record.record.Id} class="slds-col slds-size_1-of-3">
+                    <div class="slds-box slds-box_x-small slds-var-m-around_small">
+                        <lightning-card title={record.label} icon-name="standard:record">
+                            <p>Id: {record.record.Id}</p>
+                            <p>Name: {record.record.Name}</p>
+                            <p slot="footer">{record.message}</p>
+                        </lightning-card>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

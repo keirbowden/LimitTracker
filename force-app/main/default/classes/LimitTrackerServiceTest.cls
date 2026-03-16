@@ -1,26 +1,19 @@
 @isTest
 private class LimitTrackerServiceTest 
 {
-
-    private static LimitTrackerService GetService()
-    {
-        LimitTrackerService service = LimitTrackerService.GetService();
-        service.trackingEnabled=true;
-
-        return service;
-    }
-
     @IsTest
     private static void TestGetServiceNotNull()
     {
-        LimitTrackerService service = GetService();
+        LimitTrackerServiceIF service = LimitTrackerService.GetService();
         Assert.isNotNull(service, 'GetService() should never return null');
+        Assert.isTrue(service instanceof LimitTrackerService, 
+                     'GetService() should return an instance of LimitTrackerService');
     }
 
     @IsTest
     private static void TestGetServiceSingleton()
     {
-        LimitTrackerService service = GetService();
+        LimitTrackerService service = (LimitTrackerService) LimitTrackerService.GetService();
         
         Profile prof=[select Id from Profile where Name='System Administrator'];
         User testUser = new User(FirstName = 'Test', LastName = 'User',
@@ -34,7 +27,7 @@ private class LimitTrackerServiceTest
                                  LanguageLocaleKey = 'en_US');
         insert testUser;
 
-        LimitTrackerService service2;
+        LimitTrackerServiceIF service2;
         System.runAs(TestUser)
         {
              service2 = LimitTrackerService.GetService();
@@ -46,7 +39,7 @@ private class LimitTrackerServiceTest
     @IsTest
     private static void TestStartTracking()
     {
-        LimitTrackerService service = GetService();
+        LimitTrackerService service = (LimitTrackerService) LimitTrackerService.GetService();
         Test.startTest();
         service.StartTracking('Test1');
         Test.stopTest();
@@ -57,7 +50,7 @@ private class LimitTrackerServiceTest
     @IsTest
     private static void TestStartTrackingAdditionalInfo()
     {
-        LimitTrackerService service = GetService();
+        LimitTrackerService service = (LimitTrackerService) LimitTrackerService.GetService();
         Test.startTest();
         service.StartTracking('Test1', 'Additional Info');
         Test.stopTest();
@@ -70,7 +63,7 @@ private class LimitTrackerServiceTest
     @IsTest
     private static void TestStopTracking()
     {
-        LimitTrackerService service = GetService();
+        LimitTrackerService service = (LimitTrackerService) LimitTrackerService.GetService();
 
         Test.startTest();
         LimitSnapshot lss=service.stopTracking('Test Tracker');
@@ -85,7 +78,7 @@ private class LimitTrackerServiceTest
         Limit_Tracker__c tracker=new Limit_Tracker__c(Name='Test Tracker');
         insert tracker;
 
-        LimitTrackerService service = GetService();
+        LimitTrackerService service = (LimitTrackerService) LimitTrackerService.GetService();
         service.StartTracking('Test Tracker', 'Unit Test');
 
         Test.startTest();
@@ -108,7 +101,8 @@ private class LimitTrackerServiceTest
                                                       CPU_Alert_Threshold_1__c=1);
         insert tracker;
 
-        LimitTrackerService service = GetService();
+        LimitTrackerService service = (LimitTrackerService) LimitTrackerService.GetService();
+        
         Test.startTest();
         service.StartTracking('Test Tracker', 'Unit Test');
 

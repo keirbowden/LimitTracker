@@ -13,6 +13,12 @@
                 <field>Name</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Limit_Tracker_Name__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <layoutColumns>
+            <layoutItems>
                 <behavior>Required</behavior>
                 <field>Limit_Tracker__c</field>
             </layoutItems>
@@ -20,23 +26,30 @@
                 <behavior>Edit</behavior>
                 <field>User__c</field>
             </layoutItems>
+        </layoutColumns>
+        <style>TwoColumnsTopToBottom</style>
+    </layoutSections>
+    <layoutSections>
+        <customLabel>true</customLabel>
+        <detailHeading>true</detailHeading>
+        <editHeading>true</editHeading>
+        <label>Limits Info</label>
+        <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>CPU__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Heap__c</field>
+                <field>DML_Records__c</field>
             </layoutItems>
-        </layoutColumns>
-        <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>DML_Statements__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>DML_Records__c</field>
+                <field>Heap__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -47,13 +60,6 @@
                 <field>SOQL_Records__c</field>
             </layoutItems>
         </layoutColumns>
-        <style>TwoColumnsTopToBottom</style>
-    </layoutSections>
-    <layoutSections>
-        <customLabel>true</customLabel>
-        <detailHeading>true</detailHeading>
-        <editHeading>true</editHeading>
-        <label>Alert Thresholds</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Readonly</behavior>
@@ -61,7 +67,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>Heap_Alert_Threshold_1__c</field>
+                <field>DML_Records_Alert_Threshold_1__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
@@ -69,10 +75,8 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>DML_Records_Alert_Threshold_1__c</field>
+                <field>Heap_Alert_Threshold_1__c</field>
             </layoutItems>
-        </layoutColumns>
-        <layoutColumns>
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>SOQL_Queries_Alert_Threshold_1__c</field>
@@ -93,6 +97,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Additional_Information__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>JSON_Additional_Info__c</field>
             </layoutItems>
         </layoutColumns>
         <style>OneColumn</style>
@@ -151,7 +159,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00hRR000007p4FH</masterLabel>
+        <masterLabel>00hG1000004sVvy</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

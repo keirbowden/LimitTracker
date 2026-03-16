@@ -1,7 +1,7 @@
-public with sharing class LimitTrackerService 
+public with sharing class LimitTrackerService implements LimitTrackerServiceIF
 {
     @TestVisible 
-    private static LimitTrackerService instance;
+    private static LimitTrackerServiceIF instance;
 
     @TestVisible
     private Map<String, LimitSnapshot> trackersByName=new Map<String, LimitSnapshot>();
@@ -9,20 +9,20 @@ public with sharing class LimitTrackerService
     @TestVisible
     public List<LimitSnapshot> snapshotsToPublish = new List<LimitSnapshot>();
 
-    @TestVisible
-    private Boolean trackingEnabled=false;
+    private Boolean trackingEnabled=true;
 
     private LimitTrackerService() 
     {
 
     }
 
-    public static LimitTrackerService GetService()
+    public static LimitTrackerServiceIF GetService()
     {
         if (null==instance)
         {
-            instance=new LimitTrackerService();
-            instance.getConfiguration();
+            LimitTrackerService service=new LimitTrackerService();
+            service.getConfiguration();
+            instance=service;
         }
 
         return instance;
@@ -37,6 +37,11 @@ public with sharing class LimitTrackerService
         {
             trackingEnabled=config.Enabled__c;
         }
+    }
+
+    public void enableTracking(Boolean enabled)
+    {
+        trackingEnabled=enabled;
     }
 
     public void startTracking(String name)
@@ -207,8 +212,11 @@ public with sharing class LimitTrackerService
                     trackerSnapshot.Heap__c=snapshot.Heap__c;
                     trackerSnapshot.SOQL_Queries__c=snapshot.SOQL_Queries__c;
                     trackerSnapshot.SOQL_Records__c=snapshot.SOQL_Records__c;
-                    trackerSnapshot.Additional_Information__c=snapshot.Additional_Information__c + 
-                                        '<p>User: ' + snapshot.User_Id__c + '</p>';
+                    trackerSnapshot.Additional_Information__c=snapshot.Additional_Information__c;
+                    if (trackerSnapshot.Additional_Information__c.startsWith('{'))
+                    {
+                        trackerSnapshot.JSON_Additional_Info__c=true;
+                    }
                     trackerSnapshot.Limit_tracker__c=tracker.Id;    
                     trackerSnapshot.User__c=snapshot.User_Id__c;
                     trackerSnapshotsToAdd.add(trackerSnapshot);
@@ -383,7 +391,7 @@ public with sharing class LimitTrackerService
         return alerts;
     }
 
-    public void sendAlerts(List<LimitTrackerAlert> alerts)
+    private void sendAlerts(List<LimitTrackerAlert> alerts)
     {
         System.debug('Alerts = ' + alerts);
         List<LimitNotifierInterface> notifiers=new List<LimitNotifierInterface>();

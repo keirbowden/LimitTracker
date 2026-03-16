@@ -23,7 +23,7 @@ In order to track limit consumption you will need to create at least one instanc
 Once you have one or more trackers in place, capturing snapshots is just a couple of lines of code - get the `LimitTrackerService`, start tracking for a specific `Limit Tracker` - use the unique name you specified when creating the tracker, and pass any additional information you want captured with the snapshot. Once the processing you wish to track is complete - in this case a fairly useless loop to consume some CPU - stop tracking and either publish the snapshot immediately or queue it for publication later in the transaction.
 
 ````
-LimitTrackerService lts=LimitTrackerService.GetService();
+LimitTrackerServiceIF lts=LimitTrackerService.GetService();
 lts.startTracking('Loop1', 'processOpp <p>Opp Id: 006RR00000Lfc65YAB</p>');
 for (Integer idx1=0; idx1<100; idx1++)
 {
@@ -40,3 +40,20 @@ Once you have captured some snapshots you'll be able to see any patterns emergin
 <img width="946" alt="Screenshot 2025-06-22 at 12 41 29" src="https://github.com/user-attachments/assets/291dc9ce-3e3a-42a8-9506-05aec3cb2320" />
 
 At present it is your responsibility to clean up old snapshots or trackers that are no longer required - a batch job will be added in a future release.
+
+## Related Records
+
+Records related to the processing can be identified by passing the addtional information to the tracker in JSON format and supplying one or more properties containing `recordId` entries:
+
+````
+LimitTrackerServiceIF lts=LimitTrackerService.GetService();
+lts.startTracking('Loop1', '{"parentAccount": {"recordId": "001RR00000Lfc65YAB"}}');
+for (Integer idx1=0; idx1<100; idx1++)
+{
+    for (Integer idx2=0; idx2<2000; idx2++)
+    {
+        String val=''+idx1+':'+idx2;
+    }
+}
+lts.stopTrackingAndPublishSnapshot('Loop1');
+````
